@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,11 +12,20 @@ namespace StinkySteak.Benchmark.LoadAsset
         [SerializeField] private int _count = 10000;
         [SerializeField] private string _addressablePath;
 
+        public event Action OnBenchmarkDone;
+
+        private long _resourcesMiliseconds;
+        private long _addressablesMiliseconds;
+
+        public long ResourcesMiliseconds => _resourcesMiliseconds;
+        public long AddressablesMiliseconds => _addressablesMiliseconds;
+
         [Button]
-        private void Benchmark()
+        public void Benchmark()
         {
             LoadResources();
             LoadAddressable();
+            OnBenchmarkDone?.Invoke();
         }
 
         private void LoadResources()
@@ -29,7 +39,8 @@ namespace StinkySteak.Benchmark.LoadAsset
             }
 
             sw.Stop();
-            print($"[{nameof(Benchmarker)}]: LoadResources: {sw.ElapsedMilliseconds}");
+            _resourcesMiliseconds = sw.ElapsedMilliseconds;
+            print($"[{nameof(Benchmarker)}]: LoadResources: {_resourcesMiliseconds}");
         }
 
         private void LoadAddressable()
@@ -43,7 +54,8 @@ namespace StinkySteak.Benchmark.LoadAsset
             }
 
             sw.Stop();
-            print($"[{nameof(Benchmarker)}]: LoadResources: {sw.ElapsedMilliseconds}");
+            _addressablesMiliseconds = sw.ElapsedMilliseconds;
+            print($"[{nameof(Benchmarker)}]: LoadAddressables: {_addressablesMiliseconds}");
         }
 
         //private void LoadAddressableAsync()
