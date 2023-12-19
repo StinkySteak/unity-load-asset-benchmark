@@ -1,3 +1,6 @@
+# Unity Load Asset API Benchmark
+Comparing `Resources.Load` vs `Addressables.LoadAsset`. It's difficult to test using `Addressables.LoadAssetAsync` because it is ran on seperated thread. Don't take the results into account immediately, because this is premature optimization stuff. Especially the benchmark test is about 100,000 iterations and find the best API based on your game architecture instead!
+
 ## Setup
 
 | Type             | Version                                                                  |
